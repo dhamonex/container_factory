@@ -1,7 +1,12 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 
 project(container_factory)
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-add_executable(container_factory main.cpp)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-install(TARGETS container_factory RUNTIME DESTINATION bin)
+find_package(GTest REQUIRED)
+find_package(GMock REQUIRED)
+
+add_subdirectory(test)
