@@ -4,6 +4,7 @@
 using namespace testing;
 
 #include "has_insert_test.h"
+#include "has_push_back_test.h"
 
 int main( int argc, char **argv )
 {
