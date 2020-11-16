@@ -8,5 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GTest REQUIRED)
 find_package(GMock REQUIRED)
+find_package(Boost REQUIRED)
 
 add_subdirectory(test)
