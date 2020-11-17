@@ -34,7 +34,7 @@ namespace container_factory
   template <class... Types, class C>
   void factory( C &container )
   {
-    static_assert( has_insert_v<C> || has_push_back_v<C>, "container does not support insert nor push_back hence is not a valid container" );
+    static_assert( detail::has_insert_v<C> || detail::has_push_back_v<C>, "container does not support insert nor push_back hence is not a valid container" );
     detail::AddElements<Types...>::addElements( container );
   }
 }

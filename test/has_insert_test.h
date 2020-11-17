@@ -15,55 +15,55 @@
 TEST( HasInsertTest, assert_std_map_has_insert )
 {
   using MapType = std::map<int, int>;
-  static_assert( container_factory::has_insert<MapType>::value );
+  static_assert( container_factory::detail::has_insert<MapType>::value );
 }
 
 
 TEST( HasInsertTest, assert_std_unorderd_map_has_insert )
 {
   using MapType = std::unordered_map<int, int>;
-  static_assert( container_factory::has_insert<MapType>::value );
+  static_assert( container_factory::detail::has_insert<MapType>::value );
 }
 
 TEST( HasInsertTest, assert_boost_unorderd_map_has_insert )
 {
   using MapType = boost::unordered_map<int, int>;
-  static_assert( container_factory::has_insert<MapType>::value );
+  static_assert( container_factory::detail::has_insert<MapType>::value );
 }
 
 TEST( HasInsertTest, assert_set_has_insert )
 {
   using SetType = std::set<int>;
-  static_assert( container_factory::has_insert_v<SetType> );
+  static_assert( container_factory::detail::has_insert_v<SetType> );
 }
 
 TEST( HasInsertTest, assert_std_unordered_set_has_insert )
 {
   using SetType = std::unordered_set<int>;
-  static_assert( container_factory::has_insert_v<SetType> );
+  static_assert( container_factory::detail::has_insert_v<SetType> );
 }
 
 TEST( HasInsertTest, assert_boost_unordered_set_has_insert )
 {
   using SetType = boost::unordered_set<int>;
-  static_assert( container_factory::has_insert_v<SetType> );
+  static_assert( container_factory::detail::has_insert_v<SetType> );
 }
 
 TEST( HasInsertTest, assert_list_has_no_insert )
 {
   using ListType = std::list<int>;
-  static_assert( !container_factory::has_insert<ListType>::value );
+  static_assert( !container_factory::detail::has_insert<ListType>::value );
 }
 
 TEST( HasInsertTest, assert_vector_has_no_insert )
 {
   using VectorType = std::vector<int>;
-  static_assert( !container_factory::has_insert<VectorType>::value );
+  static_assert( !container_factory::detail::has_insert<VectorType>::value );
 }
 
 TEST( HasInsertTest, assert_basic_type_does_not_have_insert )
 {
-  static_assert( !container_factory::has_insert_v<int> );
+  static_assert( !container_factory::detail::has_insert_v<int> );
 }
 
 #endif // H_20C88747452345D8BDADF1C709736A5A

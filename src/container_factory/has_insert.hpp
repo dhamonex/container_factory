@@ -3,7 +3,7 @@
 
 #include <type_traits>
 
-namespace container_factory
+namespace container_factory::detail
 {
   template <class T, class = void>
   struct has_insert : std::false_type
