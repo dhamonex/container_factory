@@ -15,6 +15,9 @@ namespace container_factory::detail
   struct is_unique_ptr<std::unique_ptr<T, D>> : std::true_type
   {
   };
+  
+  template <typename T>
+  inline constexpr bool is_unique_ptr_v = is_unique_ptr<T>::value;
 }
 
 #endif // H_1B85CF26B0E74DE3854F99C9EF32C289
