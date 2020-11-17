@@ -24,6 +24,8 @@ class ContainerFactoryPointerVectorTest : public Test
 TEST_F( ContainerFactoryPointerVectorTest, add_one_base_element )
 {
   container_factory::factory<Base>( destinationContainer );
+  
+  ASSERT_THAT( destinationContainer, SizeIs( 1 ) );
 }
 
 #endif // H_625588CDC2DC42A39FF4E11DBF367F15

@@ -8,10 +8,24 @@ namespace container_factory
 {
   namespace detail
   {
+    template<class Element, class... Tail>
+    struct AddElements
+    {
+      template<typename Container>
+      static void addElements( Container &container )
+      {
+        container.push_back( new Element );
+      }
+    };
+    
   }
   
-  template <class C, class ...Types>
-  void factory( C &container );
+  template <class... Types, class C>
+  void factory( C &container )
+  {
+    static_assert( has_insert_v<C> || has_push_back_v<C>, "container does not support insert nor push_back hence is not a valid container" );
+    detail::AddElements<Types...>::addElements( container );
+  }
 }
 
 #endif // H_5BE7EE57D5AF4C379B522E686BCB3E78
