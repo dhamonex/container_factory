@@ -15,9 +15,20 @@ namespace container_factory
       static void addElements( Container &container )
       {
         container.push_back( new Element );
+        AddElements<Tail...>::addElements( container );
       }
     };
     
+    
+    template<class Element>
+    struct AddElements<Element>
+    {
+      template<typename Container>
+      static void addElements( Container &container )
+      {
+        container.push_back( new Element );
+      }
+    };
   }
   
   template <class... Types, class C>
