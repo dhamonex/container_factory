@@ -14,22 +14,22 @@ namespace container_factory
     template <class T>
     decltype(auto) createElement()
     {
-      using DestinationType = std::decay_t<T>;
+      using ElementType = std::decay_t<T>;
       
-      if constexpr ( is_boost_shared_ptr_v<T> ) {
-        return boost::make_shared<DestinationType>();
+      if constexpr ( is_boost_shared_ptr_v<ElementType> ) {
+        return boost::make_shared<typename ElementType::element_type>();
         
-      } else if constexpr ( is_std_shared_ptr_v<T> ) {
-        return std::make_shared<DestinationType>();
+      } else if constexpr ( is_std_shared_ptr_v<ElementType> ) {
+        return std::make_shared<typename ElementType::element_type>();
         
-      } else if constexpr ( is_unique_ptr_v<T> ) {
-        return std::make_unique<DestinationType>();
+      } else if constexpr ( is_unique_ptr_v<ElementType> ) {
+        return std::make_unique<typename ElementType::element_type>();
         
-      } else if constexpr ( std::is_pointer_v<DestinationType> ) {
-        return new std::remove_pointer_t<T>();
+      } else if constexpr ( std::is_pointer_v<ElementType> ) {
+        return new std::remove_pointer_t<ElementType>();
         
       } else {
-        return T();
+        return ElementType();
       }
     }
     
@@ -39,7 +39,7 @@ namespace container_factory
       template<typename Container>
       static void addElements( Container &container )
       {
-        container.push_back( new Element );
+        container.push_back( createElement<typename Container::value_type>() );
         AddElements<Tail...>::addElements( container );
       }
     };
