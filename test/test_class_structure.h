@@ -11,6 +11,8 @@ class Base
       : m_additionalText{ std::move( text ) } 
     {}
     
+    virtual ~Base() {};
+    
     std::string identifierString() const 
     { 
       auto identifier = classIdentifierString();
