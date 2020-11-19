@@ -36,7 +36,7 @@ class Base
 
 class SubclassA : public Base
 {
-  public:
+  protected:
     std::string classIdentifierString() const override { return m_className; }
       
   private:
@@ -45,7 +45,7 @@ class SubclassA : public Base
 
 class SubclassB : public Base
 {
-  public:
+  protected:
     std::string classIdentifierString() const override { return m_className; }
       
   private:
