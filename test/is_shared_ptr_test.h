@@ -14,9 +14,9 @@ TEST( IsSharedPtrTest, check_true_for_std_shared_ptr )
 TEST( IsSharedPtrTest, check_true_for_boost_shared_ptr )
 {
   using PointerType = boost::shared_ptr<int>;
-  static_assert( !container_factory::detail::is_std_shared_ptr<PointerType>::value );
-  static_assert( container_factory::detail::is_boost_shared_ptr<PointerType>::value );
-  static_assert( container_factory::detail::is_shared_ptr<PointerType>::value );
+  static_assert( !container_factory::detail::is_std_shared_ptr_v<PointerType> );
+  static_assert( container_factory::detail::is_boost_shared_ptr_v<PointerType> );
+  static_assert( container_factory::detail::is_shared_ptr_v<PointerType> );
 }
 
 #endif // H_C388D7C870774A9296D4B1307FC54C5C

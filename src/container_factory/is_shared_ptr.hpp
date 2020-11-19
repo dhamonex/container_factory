@@ -17,6 +17,9 @@ namespace container_factory::detail
   {
   };
   
+  template <typename T>
+  inline constexpr bool is_std_shared_ptr_v = is_std_shared_ptr<T>::value;
+  
   template <typename T> 
   struct is_boost_shared_ptr : std::false_type
   {
@@ -28,9 +31,16 @@ namespace container_factory::detail
   };
   
   template <typename T>
+  inline constexpr bool is_boost_shared_ptr_v = is_boost_shared_ptr<T>::value;
+
+  
+  template <typename T>
   struct is_shared_ptr : std::disjunction< is_std_shared_ptr<T>, is_boost_shared_ptr<T> >
   {
   };
+  
+  template <typename T>
+  inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
 }
 
 #endif // H_58DD808A49244040BA0B95E471DFFE99
