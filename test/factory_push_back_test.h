@@ -114,6 +114,29 @@ TEST_F( ContainerFactoryBoostSharedPtrVectorTest, add_two_base_elements )
   ASSERT_THAT( destinationContainer, SizeIs( 2 ) );
 }
 
+TEST_F( ContainerFactoryBoostSharedPtrVectorTest, add_subclass_elements )
+{
+  container_factory::factory<Base, SubclassA, SubclassB>( destinationContainer );
+  
+  ASSERT_THAT( destinationContainer, SizeIs( 3 ) );
+  
+  for ( auto i = 0; i < destinationContainer.size(); ++i ) {
+    switch( i ) {
+      case 0:
+        ASSERT_THAT( destinationContainer[i]->identifierString(), Eq( "Base_0" ) );
+        break;
+        
+      case 1:
+        ASSERT_THAT( destinationContainer[i]->identifierString(), Eq( "SubclassA_0" ) );
+        break;
+        
+      case 2:
+        ASSERT_THAT( destinationContainer[i]->identifierString(), Eq( "SubclassB_0" ) );
+        break;
+    }
+  }
+}
+
 class ContainerFactoryUniquePtrVectorTest : public Test
 {
   protected:
@@ -139,6 +162,29 @@ TEST_F( ContainerFactoryUniquePtrVectorTest, add_two_base_elements )
   container_factory::factory<Base, Base>( destinationContainer );
   
   ASSERT_THAT( destinationContainer, SizeIs( 2 ) );
+}
+
+TEST_F( ContainerFactoryUniquePtrVectorTest, add_subclass_elements )
+{
+  container_factory::factory<Base, SubclassA, SubclassB>( destinationContainer );
+  
+  ASSERT_THAT( destinationContainer, SizeIs( 3 ) );
+  
+  for ( auto i = 0; i < destinationContainer.size(); ++i ) {
+    switch( i ) {
+      case 0:
+        ASSERT_THAT( destinationContainer[i]->identifierString(), Eq( "Base_0" ) );
+        break;
+        
+      case 1:
+        ASSERT_THAT( destinationContainer[i]->identifierString(), Eq( "SubclassA_0" ) );
+        break;
+        
+      case 2:
+        ASSERT_THAT( destinationContainer[i]->identifierString(), Eq( "SubclassB_0" ) );
+        break;
+    }
+  }
 }
 
 class ContainerFactorySimpleTypeTest : public Test
