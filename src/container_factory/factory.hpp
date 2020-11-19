@@ -40,18 +40,10 @@ namespace container_factory
       static void addElements( Container &container )
       {
         container.push_back( createElement<typename Container::value_type>() );
-        AddElements<Tail...>::addElements( container );
-      }
-    };
-    
-    
-    template<class Element>
-    struct AddElements<Element>
-    {
-      template<typename Container>
-      static void addElements( Container &container )
-      {
-        container.push_back( createElement<typename Container::value_type>() );
+        
+        if constexpr ( sizeof...( Tail ) > 0 ) {
+          AddElements<Tail...>::addElements( container );
+        }
       }
     };
   }
