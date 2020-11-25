@@ -1,12 +1,17 @@
 #ifndef H_EFA8125317B74D7E9CCFD61B363BB59D
 #define H_EFA8125317B74D7E9CCFD61B363BB59D
 
-#include <container_factory/factory.hpp>
-#include "test_class_structure.h"
-#include "is_vector_container.hpp"
 
 #include <vector>
 #include <list>
+
+#include <boost/mp11.hpp>
+
+#include <container_factory/factory.hpp>
+
+#include "test_class_structure.h"
+#include "is_vector_container.hpp"
+
 
 template <class T>
 class ContainerFactoryTest : public Test
@@ -27,14 +32,16 @@ class ContainerFactoryTest : public Test
     ContainerType destinationContainer;
 };
 
-using ContainerTypes = Types< 
-  // vector types
-  std::vector<Base *>, std::vector<std::shared_ptr<Base>>, std::vector<boost::shared_ptr<Base>>, std::vector<std::unique_ptr<Base>>,
-  
-  // list types
-  std::list<Base *>, std::list<std::shared_ptr<Base>>, std::list<boost::shared_ptr<Base>>, std::list<std::unique_ptr<Base>>
->;
-TYPED_TEST_SUITE( ContainerFactoryTest, ContainerTypes );
+using PointerTypes = boost::mp11::mp_list<Base *, std::shared_ptr<Base>, std::unique_ptr<Base>, boost::shared_ptr<Base>>;
+
+using VectorContainerTypes = boost::mp11::mp_transform<std::vector, PointerTypes>;
+using ListContainerTypes = boost::mp11::mp_transform<std::list, PointerTypes>;
+using UnorderedSetContanerTypes = boost::mp11::mp_transform<std::unordered_set, PointerTypes>;
+
+using ContainerTypes = boost::mp11::mp_append<VectorContainerTypes, ListContainerTypes, UnorderedSetContanerTypes>;
+using TestContainerTypes = boost::mp11::mp_apply<Types, ContainerTypes>;
+
+TYPED_TEST_SUITE( ContainerFactoryTest, TestContainerTypes );
 
 TYPED_TEST( ContainerFactoryTest, add_one_base_element )
 {

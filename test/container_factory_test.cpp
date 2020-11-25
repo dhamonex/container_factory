@@ -9,7 +9,6 @@ using namespace testing;
 #include "is_shared_ptr_test.h"
 
 #include "factory_simple_type_test.h"
-#include "factory_insert_set_test.h"
 
 #include "factory_type_tests.h"
 
