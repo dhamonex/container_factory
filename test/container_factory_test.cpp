@@ -7,8 +7,11 @@ using namespace testing;
 #include "has_push_back_test.h"
 #include "is_unique_ptr_test.h"
 #include "is_shared_ptr_test.h"
-#include "factory_push_back_test.h"
+
+#include "factory_simple_type_test.h"
 #include "factory_insert_set_test.h"
+
+#include "factory_type_tests.h"
 
 int main( int argc, char **argv )
 {
