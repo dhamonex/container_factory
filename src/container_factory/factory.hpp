@@ -39,7 +39,13 @@ namespace container_factory
       template<typename Container>
       static void addElements( Container &container )
       {
-        container.push_back( createElement<Element, typename Container::value_type>() );
+        
+        if constexpr ( has_push_back_v<Container> ) {
+          container.push_back( createElement<Element, typename Container::value_type>() );
+          
+        } else {
+          container.insert( createElement<Element, typename Container::value_type>() );
+        }
         
         if constexpr ( sizeof...( Tail ) > 0 ) {
           AddElements<Tail...>::addElements( container );
