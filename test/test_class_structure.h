@@ -51,6 +51,9 @@ private:
 
 class SubclassA : public Base
 {
+public:
+  using Base::Base;
+  
 protected:
   std::string classIdentifierString() const override
   {
@@ -63,6 +66,9 @@ private:
 
 class SubclassB : public Base
 {
+public:
+  using Base::Base;
+  
 protected:
   std::string classIdentifierString() const override
   {

@@ -11,56 +11,56 @@ namespace container_factory
 {
   namespace detail
   {
-    template <class T, class ContainerValueType>
-    decltype( auto ) createElement()
+    template <class T, class ContainerValueType, typename... Args>
+    decltype( auto ) createElement( Args&&... args )
     {
       using ElementType = std::decay_t<T>;
 
       if constexpr ( is_boost_shared_ptr_v<ContainerValueType> ) {
-        return boost::make_shared<ElementType>();
+        return boost::make_shared<ElementType>( std::forward<Args>( args )... );
 
       } else if constexpr ( is_std_shared_ptr_v<ContainerValueType> ) {
-        return std::make_shared<ElementType>();
+        return std::make_shared<ElementType>( std::forward<Args>( args )... );
 
       } else if constexpr ( is_unique_ptr_v<ContainerValueType> ) {
-        return std::make_unique<ElementType>();
+        return std::make_unique<ElementType>( std::forward<Args>( args )... );
 
       } else if constexpr ( std::is_pointer_v<ContainerValueType> ) {
-        return new ElementType();
+        return new ElementType( std::forward<Args>( args )... );
 
       } else {
-        return ElementType();
+        return ElementType( std::forward<Args>( args )... );
       }
     }
 
     template <class Element, class... Tail>
     struct AddElements
     {
-      template <typename Container>
-      static void addElements( Container &container )
+      template <typename Container, typename... Args>
+      static void addElements( Container &container, Args&&... args )
       {
 
         if constexpr ( has_push_back_v<Container> ) {
-          container.push_back( createElement<Element, typename Container::value_type>() );
+          container.push_back( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
 
         } else {
-          container.insert( createElement<Element, typename Container::value_type>() );
+          container.insert( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
         }
 
         if constexpr ( sizeof...( Tail ) > 0 ) {
-          AddElements<Tail...>::addElements( container );
+          AddElements<Tail...>::addElements( container, std::forward<Args>( args )... );
         }
       }
     };
   } // namespace detail
 
   template <class... Types, class C, typename... Args>
-  void factory( C &container, Args... args )
+  void factory( C &container, Args&&... args )
   {
     static_assert(
       detail::has_insert_v<C> || detail::has_push_back_v<C>,
       "container does not support insert nor push_back hence is not a valid container" );
-    detail::AddElements<Types...>::addElements( container );
+    detail::AddElements<Types...>::addElements( container, std::forward<Args>( args )... );
   }
 } // namespace container_factory
 
