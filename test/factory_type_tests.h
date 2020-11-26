@@ -6,6 +6,7 @@
 #include <list>
 
 #include <boost/mp11.hpp>
+#include <boost/unordered_set.hpp>
 
 #include <container_factory/factory.hpp>
 
