@@ -34,12 +34,12 @@ class ContainerFactoryTest : public Test
 
 using PointerTypes = boost::mp11::mp_list<Base *, std::shared_ptr<Base>, std::unique_ptr<Base>, boost::shared_ptr<Base>>;
 
-using VectorContainerTypes = boost::mp11::mp_transform<std::vector, PointerTypes>;
-using ListContainerTypes = boost::mp11::mp_transform<std::list, PointerTypes>;
-using StdUnorderedSetContainerTypes = boost::mp11::mp_transform<std::unordered_set, PointerTypes>;
-using BoostUnorderedSetContainerTypes = boost::mp11::mp_transform<boost::unordered_set, PointerTypes>;
-
-using ContainerTypes = boost::mp11::mp_append<VectorContainerTypes, ListContainerTypes, StdUnorderedSetContainerTypes, BoostUnorderedSetContainerTypes>;
+using ContainerTypes = boost::mp11::mp_append<
+  boost::mp11::mp_transform<std::vector, PointerTypes>,
+  boost::mp11::mp_transform<std::list, PointerTypes>,
+  boost::mp11::mp_transform<std::unordered_set, PointerTypes>,
+  boost::mp11::mp_transform<boost::unordered_set, PointerTypes>
+>;
 using TestContainerTypes = boost::mp11::mp_apply<Types, ContainerTypes>;
 
 TYPED_TEST_SUITE( ContainerFactoryTest, TestContainerTypes );
