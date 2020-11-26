@@ -54,8 +54,8 @@ namespace container_factory
     };
   } // namespace detail
 
-  template <class... Types, class C>
-  void factory( C &container )
+  template <class... Types, class C, typename... Args>
+  void factory( C &container, Args... args )
   {
     static_assert(
       detail::has_insert_v<C> || detail::has_push_back_v<C>,

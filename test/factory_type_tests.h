@@ -95,6 +95,19 @@ TYPED_TEST( ContainerFactoryTest, add_subclass_elements )
   }
 }
 
+TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_parameter )
+{
+  container_factory::factory<Base, SubclassA, SubclassB>( this->destinationContainer, 2 );
+  
+  using RequiredIdentifierStrings = std::unordered_set<std::string>; 
+  RequiredIdentifierStrings requiredIdentifiers{ "Base_2", "SubclassA_2", "SubclassB_2" };
+  
+  for ( const auto &object : this->destinationContainer ) {
+    ASSERT_THAT( requiredIdentifiers, Contains( object->identifierString() ) );
+    ASSERT_THAT( requiredIdentifiers.erase( object->identifierString() ), Eq( 1 ) );
+  }
+}
+
 #endif // H_EFA8125317B74D7E9CCFD61B363BB59D
 
 
