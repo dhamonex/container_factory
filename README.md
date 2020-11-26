@@ -8,3 +8,5 @@ Quite often it is necessary to fill a container with instances of objects of a c
 ```c++
 container_factory::factory<Base, SubclassA, SubclassB>( destinationContainer, <additional constructor arguments> );
 ```
+
+The `destinationContainer` should be any container type except where the `value_type` is a kind of `std::pair`.
