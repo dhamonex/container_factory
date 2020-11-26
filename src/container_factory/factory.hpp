@@ -11,7 +11,8 @@ namespace container_factory
 {
   namespace detail
   {
-    template <class T, class ContainerValueType> decltype( auto ) createElement()
+    template <class T, class ContainerValueType>
+    decltype( auto ) createElement()
     {
       using ElementType = std::decay_t<T>;
 
@@ -32,9 +33,11 @@ namespace container_factory
       }
     }
 
-    template <class Element, class... Tail> struct AddElements
+    template <class Element, class... Tail>
+    struct AddElements
     {
-      template <typename Container> static void addElements( Container &container )
+      template <typename Container>
+      static void addElements( Container &container )
       {
 
         if constexpr ( has_push_back_v<Container> ) {
@@ -51,7 +54,8 @@ namespace container_factory
     };
   } // namespace detail
 
-  template <class... Types, class C> void factory( C &container )
+  template <class... Types, class C>
+  void factory( C &container )
   {
     static_assert(
       detail::has_insert_v<C> || detail::has_push_back_v<C>,

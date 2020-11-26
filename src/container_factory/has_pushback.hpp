@@ -5,7 +5,8 @@
 
 namespace container_factory::detail
 {
-  template <class T, class = void> struct has_push_back : std::false_type
+  template <class T, class = void>
+  struct has_push_back : std::false_type
   {
   };
 
@@ -15,7 +16,8 @@ namespace container_factory::detail
   {
   };
 
-  template <class T> inline constexpr bool has_push_back_v = has_push_back<T>::value;
+  template <class T>
+  inline constexpr bool has_push_back_v = has_push_back<T>::value;
 } // namespace container_factory::detail
 
 #endif // H_62AF9DE838BE4830B707D37C127ABC2F
