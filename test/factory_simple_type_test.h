@@ -34,6 +34,17 @@ TEST_F( ContainerFactorySimpleTypeTest, add_two_base_elements )
   ASSERT_THAT( destinationContainer, SizeIs( 2 ) );
 }
 
+TEST_F( ContainerFactorySimpleTypeTest, add_two_base_elements_with_integer_argument )
+{
+  container_factory::factory<Base, Base>( destinationContainer, 2 );
+  
+  ASSERT_THAT( destinationContainer, SizeIs( 2 ) );
+  
+  for ( const auto &object : destinationContainer ) {
+    ASSERT_THAT( object.identifierString(), Eq( "Base_2" ) );
+  }
+}
+
 #endif // H_625588CDC2DC42A39FF4E11DBF367F15
 
 
