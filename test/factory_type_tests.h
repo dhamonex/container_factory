@@ -12,6 +12,7 @@
 
 #include "test_class_structure.h"
 #include "is_vector_container.hpp"
+#include "pointertypes.h"
 
 
 template <class T>
@@ -32,8 +33,6 @@ class ContainerFactoryTest : public Test
     
     ContainerType destinationContainer;
 };
-
-using PointerTypes = boost::mp11::mp_list<Base *, std::shared_ptr<Base>, std::unique_ptr<Base>, boost::shared_ptr<Base>>;
 
 using ContainerTypes = boost::mp11::mp_append<
   boost::mp11::mp_transform<std::vector, PointerTypes>,
