@@ -39,16 +39,17 @@ namespace container_factory
       template <typename Container, typename... Args>
       static void addElements( Container &container, Args&&... args )
       {
+        if constexpr ( !std::is_same_v<Element, boost::tuples::null_type> ) {
+          if constexpr ( has_push_back_v<Container> ) {
+            container.push_back( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
 
-        if constexpr ( has_push_back_v<Container> ) {
-          container.push_back( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
+          } else {
+            container.insert( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
+          }
 
-        } else {
-          container.insert( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
-        }
-
-        if constexpr ( sizeof...( Tail ) > 0 ) {
-          AddElements<Tail...>::addElements( container, std::forward<Args>( args )... );
+          if constexpr ( sizeof...( Tail ) > 0 ) {
+            AddElements<Tail...>::addElements( container, std::forward<Args>( args )... );
+          }
         }
       }
     };
