@@ -4,6 +4,7 @@
 #include "has_insert.hpp"
 #include "has_pushback.hpp"
 #include "is_shared_ptr.hpp"
+#include "is_unique_ptr.hpp"
 
 #include <boost/make_shared.hpp>
 
