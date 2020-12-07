@@ -1,0 +1,34 @@
+language: cpp
+dist: bionic
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+  apt:
+    update: true
+    sudo: true
+    packages:
+      - gcc
+      - g++
+      - clang
+      - python-yaml
+      - lcov
+      - cmake
+      - libboost-all-dev
+      - git
+      
+    sourceline: 'ppa:ubuntu-toolchain-r/test'
+    
+before_script:
+  - git clone -b v1.8.x https://github.com/google/googletest.git gtest
+  - cd gtest && mkdir build && cd build && cmake ../ && make && sudo make install
+  - cd ../../
+  
+script:
+  - mkdir -p build
+  - cd build
+  - cmake ../
+  - make
+  - ctest
