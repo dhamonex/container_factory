@@ -26,10 +26,8 @@ TEST( IsUniquePtrTest, check_false_for_boost_shared_ptr )
 
 TEST( IsUniquePtrTest, check_false_for_normal_ptr )
 {
-  using PointerType = int*;
+  using PointerType = int *;
   static_assert( !container_factory::detail::is_unique_ptr_v<PointerType> );
 }
 
 #endif // H_1C1B826D5E9E41C09442DE5D27CCE21A
-
-

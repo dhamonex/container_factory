@@ -3,9 +3,9 @@
 
 #include <container_factory/has_pushback.hpp>
 
-#include <vector>
 #include <list>
 #include <unordered_map>
+#include <vector>
 
 TEST( HasPushBackTest, assert_vector_has_push_back )
 {
@@ -26,5 +26,3 @@ TEST( HasPushBackTest, assert_unordered_map_has_no_push_back )
 }
 
 #endif // H_AE754EB4F43349A093DF686DB30DD31E
-
-

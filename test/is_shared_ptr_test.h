@@ -20,5 +20,3 @@ TEST( IsSharedPtrTest, check_true_for_boost_shared_ptr )
 }
 
 #endif // H_C388D7C870774A9296D4B1307FC54C5C
-
-

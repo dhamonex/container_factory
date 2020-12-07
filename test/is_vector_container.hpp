@@ -15,5 +15,3 @@ template <typename T>
 inline constexpr bool is_vector_container_v = is_vector_container<T>::value;
 
 #endif // H_782A772873A84586A0984C5D256F68FF
-
-

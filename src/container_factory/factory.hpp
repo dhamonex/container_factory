@@ -13,7 +13,7 @@ namespace container_factory
   namespace detail
   {
     template <class T, class ContainerValueType, typename... Args>
-    decltype( auto ) createElement( Args&&... args )
+    decltype( auto ) createElement( Args &&...args )
     {
       using ElementType = std::decay_t<T>;
 
@@ -38,14 +38,16 @@ namespace container_factory
     struct AddElements
     {
       template <typename Container, typename... Args>
-      static void addElements( Container &container, Args&&... args )
+      static void addElements( Container &container, Args &&...args )
       {
         if constexpr ( !std::is_same_v<Element, boost::tuples::null_type> ) {
           if constexpr ( has_push_back_v<Container> ) {
-            container.push_back( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
+            container.push_back( createElement<Element, typename Container::value_type>(
+              std::forward<Args>( args )... ) );
 
           } else {
-            container.insert( createElement<Element, typename Container::value_type>( std::forward<Args>( args )... ) );
+            container.insert( createElement<Element, typename Container::value_type>(
+              std::forward<Args>( args )... ) );
           }
 
           if constexpr ( sizeof...( Tail ) > 0 ) {
@@ -54,21 +56,21 @@ namespace container_factory
         }
       }
     };
-    
+
     template <template <class...> class ListType, class... Types>
     struct AddElements<ListType<Types...>>
     {
       template <typename Container, typename... Args>
-      static void addElements( Container &container, Args&&... args )
+      static void addElements( Container &container, Args &&...args )
       {
         AddElements<Types...>::addElements( container, std::forward<Args>( args )... );
       }
     };
-    
+
   } // namespace detail
 
   template <class... Types, class C, typename... Args>
-  void factory( C &container, Args&&... args )
+  void factory( C &container, Args &&...args )
   {
     static_assert(
       detail::has_insert_v<C> || detail::has_push_back_v<C>,
