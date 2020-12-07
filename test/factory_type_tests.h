@@ -105,6 +105,8 @@ TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_integer
     ASSERT_THAT( requiredIdentifiers, Contains( object->identifierString() ) );
     ASSERT_THAT( requiredIdentifiers.erase( object->identifierString() ), Eq( 1 ) );
   }
+  
+  ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
 TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_string_parameter )
@@ -118,6 +120,8 @@ TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_string_
     ASSERT_THAT( requiredIdentifiers, Contains( object->identifierString() ) );
     ASSERT_THAT( requiredIdentifiers.erase( object->identifierString() ), Eq( 1 ) );
   }
+  
+  ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
 TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_string_and_integer_parameter )
