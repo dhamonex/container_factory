@@ -135,6 +135,38 @@ TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_string_
     ASSERT_THAT( requiredIdentifiers, Contains( object->identifierString() ) );
     ASSERT_THAT( requiredIdentifiers.erase( object->identifierString() ), Eq( 1 ) );
   }
+  
+  ASSERT_THAT( requiredIdentifiers, IsEmpty() );
+}
+
+TYPED_TEST( ContainerFactoryTest, type_list_as_std_tuple_test )
+{
+  container_factory::factory<std::tuple<Base, SubclassA, SubclassB>>( this->destinationContainer, "Test", 15 );
+  
+  using RequiredIdentifierStrings = std::unordered_set<std::string>; 
+  RequiredIdentifierStrings requiredIdentifiers{ "Base_Test_15", "SubclassA_Test_15", "SubclassB_Test_15" };
+  
+  for ( const auto &object : this->destinationContainer ) {
+    ASSERT_THAT( requiredIdentifiers, Contains( object->identifierString() ) );
+    ASSERT_THAT( requiredIdentifiers.erase( object->identifierString() ), Eq( 1 ) );
+  }
+  
+  ASSERT_THAT( requiredIdentifiers, IsEmpty() );
+}
+
+TYPED_TEST( ContainerFactoryTest, type_list_as_boost_mp_list )
+{
+  container_factory::factory<boost::mp11::mp_list<Base, SubclassA, SubclassB>>( this->destinationContainer, "Test", 15 );
+  
+  using RequiredIdentifierStrings = std::unordered_set<std::string>; 
+  RequiredIdentifierStrings requiredIdentifiers{ "Base_Test_15", "SubclassA_Test_15", "SubclassB_Test_15" };
+  
+  for ( const auto &object : this->destinationContainer ) {
+    ASSERT_THAT( requiredIdentifiers, Contains( object->identifierString() ) );
+    ASSERT_THAT( requiredIdentifiers.erase( object->identifierString() ), Eq( 1 ) );
+  }
+  
+  ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
 #endif // H_EFA8125317B74D7E9CCFD61B363BB59D

@@ -52,6 +52,17 @@ namespace container_factory
         }
       }
     };
+    
+    template <template <class...> class ListType, class... Types>
+    struct AddElements<ListType<Types...>>
+    {
+      template <typename Container, typename... Args>
+      static void addElements( Container &container, Args&&... args )
+      {
+        AddElements<Types...>::addElements( container, std::forward<Args>( args )... );
+      }
+    };
+    
   } // namespace detail
 
   template <class... Types, class C, typename... Args>
