@@ -12,6 +12,7 @@
 #include "is_vector_container.hpp"
 #include "pointertypes.h"
 #include "test_class_structure.h"
+#include "config.h"
 
 template <class T>
 class ContainerFactoryTest : public Test
@@ -32,6 +33,22 @@ protected:
 
   ContainerType destinationContainer;
 };
+
+#ifndef HAS_BOOST_SHARED_PTR_HASH
+namespace std
+{
+
+  template <class T>
+  struct hash<::boost::shared_ptr<T>>
+  {
+    std::size_t operator()( ::boost::shared_ptr<T> const &p ) const BOOST_SP_NOEXCEPT
+    {
+      return std::hash<typename ::boost::shared_ptr<T>::element_type *>()( p.get() );
+    }
+  };
+
+} // namespace std
+#endif
 
 using ContainerTypes =
   boost::mp11::mp_append<boost::mp11::mp_transform<std::vector, PointerTypes>,
