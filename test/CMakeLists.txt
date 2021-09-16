@@ -10,4 +10,4 @@ target_link_libraries(container_factory_test
   GMock::GMock
 )
 gtest_add_tests(TARGET container_factory_test)
-gtest_discover_tests(container_factory_test)
+gtest_discover_tests(container_factory_test XML_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/gtestresult)
