@@ -25,6 +25,7 @@ jobs:
         - name: Build container factory tests 🛠
           run: |
             mkdir -p build
+            cmake ../
             cd build
             make
             
