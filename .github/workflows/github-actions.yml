@@ -1,0 +1,38 @@
+name: build-and-test
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Setup Build Environment ⌛
+          run: sudo apt-get install -y g++ libmpdec-dev libfmt-dev cmake libboost-all-dev doxygen doxygen-doc doxygen-latex
+          
+        - name: Checkout googletest ⏳
+          uses: actions/checkout@v2
+          with:
+            repository: google/googletest
+            ref: release-1.11.0
+            path: googletest
+            
+        - name: Build googletest 🔧
+          run: |
+            cd googletest && mkdir build && cd build && cmake ../ && make && sudo make install
+            
+        - name: Checkout Source Code ⏬
+          uses: actions/checkout@v2
+          
+        - name: Build container factory tests 🛠
+          run: |
+            mkdir -p build
+            cd build
+            make
+            
+        - name: Run Tests 🧪
+          run: cd build && ctest
+          
+        - name: Publish Unit Test Results 🔃
+          uses: EnricoMi/publish-unit-test-result-action@v1
+          if: always()
+          with:
+            files: build/test/gtestresult/*.xml
