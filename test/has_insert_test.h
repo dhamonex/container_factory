@@ -12,57 +12,34 @@
 #include <unordered_set>
 #include <vector>
 
-TEST( HasInsertTest, assert_std_map_has_insert )
+template <typename T>
+class HasInsertTest : public Test
 {
-  using MapType = std::map<int, int>;
-  static_assert( container_factory::detail::has_insert<MapType>::value );
+};
+
+using InsertMapTypes =
+  Types<std::map<int, int>, std::unordered_map<int, int>, boost::unordered_map<int, int>,
+        std::set<int>, std::unordered_set<int>, boost::unordered_set<int>>;
+
+TYPED_TEST_SUITE( HasInsertTest, InsertMapTypes );
+
+TYPED_TEST( HasInsertTest, assert_type_has_insert )
+{
+  static_assert( container_factory::detail::has_insert<TypeParam>::value );
 }
 
-TEST( HasInsertTest, assert_std_unorderd_map_has_insert )
+template <typename T>
+class HasNoInsertTest : public Test
 {
-  using MapType = std::unordered_map<int, int>;
-  static_assert( container_factory::detail::has_insert<MapType>::value );
-}
+};
 
-TEST( HasInsertTest, assert_boost_unorderd_map_has_insert )
-{
-  using MapType = boost::unordered_map<int, int>;
-  static_assert( container_factory::detail::has_insert<MapType>::value );
-}
+using HasNoInsertTypes = Types<std::list<int>, std::vector<int>, int>;
 
-TEST( HasInsertTest, assert_set_has_insert )
-{
-  using SetType = std::set<int>;
-  static_assert( container_factory::detail::has_insert_v<SetType> );
-}
+TYPED_TEST_SUITE( HasNoInsertTest, HasNoInsertTypes );
 
-TEST( HasInsertTest, assert_std_unordered_set_has_insert )
+TYPED_TEST( HasNoInsertTest, assert_type_has_no_insert )
 {
-  using SetType = std::unordered_set<int>;
-  static_assert( container_factory::detail::has_insert_v<SetType> );
-}
-
-TEST( HasInsertTest, assert_boost_unordered_set_has_insert )
-{
-  using SetType = boost::unordered_set<int>;
-  static_assert( container_factory::detail::has_insert_v<SetType> );
-}
-
-TEST( HasInsertTest, assert_list_has_no_insert )
-{
-  using ListType = std::list<int>;
-  static_assert( !container_factory::detail::has_insert<ListType>::value );
-}
-
-TEST( HasInsertTest, assert_vector_has_no_insert )
-{
-  using VectorType = std::vector<int>;
-  static_assert( !container_factory::detail::has_insert<VectorType>::value );
-}
-
-TEST( HasInsertTest, assert_basic_type_does_not_have_insert )
-{
-  static_assert( !container_factory::detail::has_insert_v<int> );
+  static_assert( !container_factory::detail::has_insert<TypeParam>::value );
 }
 
 #endif // H_20C88747452345D8BDADF1C709736A5A
