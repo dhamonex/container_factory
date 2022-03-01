@@ -37,34 +37,34 @@ namespace container_factory
     template <class Element, class... Tail>
     struct AddElements
     {
-      template <typename Container, typename... Args>
-      static void addElements( Container &container, Args &&...args )
-      {
-        if constexpr ( !std::is_same_v<Element, boost::tuples::null_type> ) {
-          if constexpr ( has_push_back_v<Container> ) {
-            container.push_back( createElement<Element, typename Container::value_type>(
-              std::forward<Args>( args )... ) );
+        template <typename Container, typename... Args>
+        static void addElements( Container &container, Args &&...args )
+        {
+          if constexpr ( !std::is_same_v<Element, boost::tuples::null_type> ) {
+            if constexpr ( has_push_back_v<Container> ) {
+              container.push_back( createElement<Element, typename Container::value_type>(
+                std::forward<Args>( args )... ) );
 
-          } else {
-            container.insert( createElement<Element, typename Container::value_type>(
-              std::forward<Args>( args )... ) );
-          }
+            } else {
+              container.insert( createElement<Element, typename Container::value_type>(
+                std::forward<Args>( args )... ) );
+            }
 
-          if constexpr ( sizeof...( Tail ) > 0 ) {
-            AddElements<Tail...>::addElements( container, std::forward<Args>( args )... );
+            if constexpr ( sizeof...( Tail ) > 0 ) {
+              AddElements<Tail...>::addElements( container, std::forward<Args>( args )... );
+            }
           }
         }
-      }
     };
 
     template <template <class...> class ListType, class... Types>
     struct AddElements<ListType<Types...>>
     {
-      template <typename Container, typename... Args>
-      static void addElements( Container &container, Args &&...args )
-      {
-        AddElements<Types...>::addElements( container, std::forward<Args>( args )... );
-      }
+        template <typename Container, typename... Args>
+        static void addElements( Container &container, Args &&...args )
+        {
+          AddElements<Types...>::addElements( container, std::forward<Args>( args )... );
+        }
     };
 
   } // namespace detail

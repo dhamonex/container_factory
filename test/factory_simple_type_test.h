@@ -9,15 +9,15 @@
 
 class ContainerFactorySimpleTypeTest : public Test
 {
-protected:
-  using VectorContainer = std::vector<Base>;
+  protected:
+    using VectorContainer = std::vector<Base>;
 
-  void TearDown() override
-  {
-    destinationContainer.clear();
-  }
+    void TearDown() override
+    {
+      destinationContainer.clear();
+    }
 
-  VectorContainer destinationContainer;
+    VectorContainer destinationContainer;
 };
 
 TEST_F( ContainerFactorySimpleTypeTest, add_one_base_element )
