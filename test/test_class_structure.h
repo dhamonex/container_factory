@@ -79,4 +79,31 @@ class SubclassB : public Base
     inline static const std::string m_className{ "SubclassB" };
 };
 
+template <typename T>
+inline constexpr bool is_pointer_type =
+  container_factory::detail::is_shared_ptr_v<T> ||
+  container_factory::detail::is_boost_shared_ptr_v<T> ||
+  container_factory::detail::is_unique_ptr_v<T> || std::is_pointer_v<T>;
+
+template <class T>
+struct TestClassEqualKeyCompare
+{
+    bool operator()( const T &rhs, const T &lhs ) const
+    {
+      static_assert( is_pointer_type<T>, "needs to be a pointer type of Base" );
+      return rhs->identifierString() == lhs->identifierString();
+    }
+};
+
+template <class T>
+struct TestClassHash
+{
+  bool operator()( const T &v ) const
+    {
+      static_assert( is_pointer_type<T>, "needs to be a pointer type of Base" );
+      return std::hash<std::string>{}( v->identifierString() );
+    }
+};
+
+
 #endif // H_107F4246F0794C3481C63FF948760E6A

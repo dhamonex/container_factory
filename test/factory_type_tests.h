@@ -1,37 +1,9 @@
 #ifndef H_EFA8125317B74D7E9CCFD61B363BB59D
 #define H_EFA8125317B74D7E9CCFD61B363BB59D
 
-#include <list>
-#include <vector>
-
-#include <boost/mp11.hpp>
-#include <boost/unordered_set.hpp>
-
-#include <container_factory/factory.hpp>
-
-#include "config.h"
-#include "is_vector_container.hpp"
-#include "pointertypes.h"
-#include "test_class_structure.h"
-
 template <class T>
-class ContainerFactoryTest : public Test
+class ContainerFactoryTypeTest : public ContainerFactoryTest<T>
 {
-  protected:
-    using ContainerType = T;
-    using ValueType = typename ContainerType::value_type;
-
-    void TearDown() override
-    {
-      if constexpr ( std::is_pointer_v<ValueType> ) {
-        std::for_each( destinationContainer.begin(), destinationContainer.end(),
-                       []( auto value ) { delete value; } );
-      }
-
-      destinationContainer.clear();
-    }
-
-    ContainerType destinationContainer;
 };
 
 #ifndef HAS_BOOST_SHARED_PTR_HASH
@@ -57,23 +29,23 @@ using ContainerTypes =
                          boost::mp11::mp_transform<boost::unordered_set, PointerTypes>>;
 using TestContainerTypes = boost::mp11::mp_apply<Types, ContainerTypes>;
 
-TYPED_TEST_SUITE( ContainerFactoryTest, TestContainerTypes );
+TYPED_TEST_SUITE( ContainerFactoryTypeTest, TestContainerTypes );
 
-TYPED_TEST( ContainerFactoryTest, add_one_base_element )
+TYPED_TEST( ContainerFactoryTypeTest, add_one_base_element )
 {
   container_factory::factory<Base>( this->destinationContainer );
 
   ASSERT_THAT( this->destinationContainer, SizeIs( 1 ) );
 }
 
-TYPED_TEST( ContainerFactoryTest, add_two_base_elements )
+TYPED_TEST( ContainerFactoryTypeTest, add_two_base_elements )
 {
   container_factory::factory<Base, Base>( this->destinationContainer );
 
   ASSERT_THAT( this->destinationContainer, SizeIs( 2 ) );
 }
 
-TYPED_TEST( ContainerFactoryTest, add_subclass_elements )
+TYPED_TEST( ContainerFactoryTypeTest, add_subclass_elements )
 {
   container_factory::factory<Base, SubclassA, SubclassB>( this->destinationContainer );
 
@@ -109,7 +81,7 @@ TYPED_TEST( ContainerFactoryTest, add_subclass_elements )
   }
 }
 
-TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_integer_parameter )
+TYPED_TEST( ContainerFactoryTypeTest, add_subclass_elements_with_constructor_integer_parameter )
 {
   container_factory::factory<Base, SubclassA, SubclassB>( this->destinationContainer, 2 );
 
@@ -124,7 +96,7 @@ TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_integer
   ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
-TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_string_parameter )
+TYPED_TEST( ContainerFactoryTypeTest, add_subclass_elements_with_constructor_string_parameter )
 {
   container_factory::factory<Base, SubclassA, SubclassB>( this->destinationContainer, "Test" );
 
@@ -140,7 +112,7 @@ TYPED_TEST( ContainerFactoryTest, add_subclass_elements_with_constructor_string_
   ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
-TYPED_TEST( ContainerFactoryTest,
+TYPED_TEST( ContainerFactoryTypeTest,
             add_subclass_elements_with_constructor_string_and_integer_parameter )
 {
   container_factory::factory<Base, SubclassA, SubclassB>( this->destinationContainer, "Test", 15 );
@@ -157,7 +129,7 @@ TYPED_TEST( ContainerFactoryTest,
   ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
-TYPED_TEST( ContainerFactoryTest, type_list_as_std_tuple_test )
+TYPED_TEST( ContainerFactoryTypeTest, type_list_as_std_tuple_test )
 {
   container_factory::factory<std::tuple<Base, SubclassA, SubclassB>>( this->destinationContainer,
                                                                       "Test", 15 );
@@ -174,7 +146,7 @@ TYPED_TEST( ContainerFactoryTest, type_list_as_std_tuple_test )
   ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
-TYPED_TEST( ContainerFactoryTest, type_list_as_boost_tuple_test )
+TYPED_TEST( ContainerFactoryTypeTest, type_list_as_boost_tuple_test )
 {
   container_factory::factory<boost::tuple<Base, SubclassA, SubclassB>>( this->destinationContainer,
                                                                         "Test", 15 );
@@ -191,7 +163,7 @@ TYPED_TEST( ContainerFactoryTest, type_list_as_boost_tuple_test )
   ASSERT_THAT( requiredIdentifiers, IsEmpty() );
 }
 
-TYPED_TEST( ContainerFactoryTest, type_list_as_boost_mp_list )
+TYPED_TEST( ContainerFactoryTypeTest, type_list_as_boost_mp_list )
 {
   container_factory::factory<boost::mp11::mp_list<Base, SubclassA, SubclassB>>(
     this->destinationContainer, "Test", 15 );
