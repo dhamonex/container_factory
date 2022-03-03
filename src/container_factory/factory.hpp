@@ -34,6 +34,15 @@ namespace container_factory
       }
     }
 
+    template <class T>
+    void destroyElement( T &element )
+    {
+      if constexpr ( std::is_pointer_v<T> ) {
+        delete element;
+        element = nullptr;
+      }
+    }
+
     template <class Element, class... Tail>
     struct AddElements
     {
@@ -41,13 +50,16 @@ namespace container_factory
         static void addElements( Container &container, Args &&...args )
         {
           if constexpr ( !std::is_same_v<Element, boost::tuples::null_type> ) {
+            auto element = createElement<Element, typename Container::value_type>(
+              std::forward<Args>( args )... );
             if constexpr ( has_push_back_v<Container> ) {
-              container.push_back( createElement<Element, typename Container::value_type>(
-                std::forward<Args>( args )... ) );
+              container.push_back( std::move( element ) );
 
             } else {
-              container.insert( createElement<Element, typename Container::value_type>(
-                std::forward<Args>( args )... ) );
+              auto result = container.insert( std::move( element ) ).second;
+              if ( !result ) {
+                destroyElement( element );
+              }
             }
 
             if constexpr ( sizeof...( Tail ) > 0 ) {
